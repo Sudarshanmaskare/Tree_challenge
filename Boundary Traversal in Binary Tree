@@ -1,0 +1,48 @@
+ void leaves(Node* root,vector <int> &v){
+        if(root==NULL){
+            return;
+        }
+        leaves(root->left,v);
+        if(root->left==NULL && root->right==NULL){
+            v.push_back(root->data);
+        }
+        leaves(root->right,v);
+    }
+    void boundary_right(Node* root,vector <int> &v){
+        if(root==NULL) return;
+        if(root->right){
+            boundary_right(root->right,v);
+            v.push_back(root->data);
+        }
+        else if(root->left){
+             boundary_right(root->left,v);
+            v.push_back(root->data);
+        }
+    }
+    void boundary_left(Node* root,vector <int> &v){
+         if(root==NULL) return;
+        if(root->left){
+            v.push_back(root->data);
+            boundary_left(root->left,v);
+            
+        }
+        else if(root->right){
+            v.push_back(root->data);
+             boundary_left(root->right,v);
+            
+        }
+    }
+    
+    vector <int> printBoundary(Node *root)
+    {
+        //Your code here
+        if(root==NULL){
+            return {};
+        }
+        vector<int> v;
+        v.push_back(root->data);
+        boundary_left(root->left,v);
+        leaves(root,v);
+        boundary_right(root->right,v);
+        return v;
+    }
