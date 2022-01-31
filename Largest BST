@@ -1,0 +1,23 @@
+   vector<int> cal(Node* root){
+        if(!root) return {0,INT_MAX,INT_MIN};
+        if(!root->left && !root->right) return {1,root->data,root->data};
+        
+        auto lh=cal(root->left);
+        auto rh=cal(root->right);
+        
+        
+            if(root->data>lh[2] && root->data<rh[1]){
+                int x=lh[1],y=rh[2];
+                if(x==INT_MAX) x=root->data;
+                if(y==INT_MIN) y=root->data;
+                
+                return {lh[0]+rh[0]+1,x,y};
+            }
+        return {max(lh[0],rh[0]),INT_MIN,INT_MAX};
+        
+    }
+    int largestBst(Node *root)
+    {
+    	//Your code here
+    	return cal(root)[0];
+    }
