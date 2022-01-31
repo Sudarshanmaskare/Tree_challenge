@@ -1,0 +1,63 @@
+struct trie{
+  bool endword;
+  struct trie* child[26];
+    trie(){
+        endword=false;
+        for(int i=0;i<26;i++){
+            child[i]=NULL;
+        }
+    }
+};
+
+class Trie {
+    trie* root;
+public:
+    
+    Trie() {
+        root=new trie();
+    }
+    
+    void insert(string word) {
+        trie *temp=root;
+        for(int i=0;i<word.size();i++){
+            int index=word[i]-'a';
+            if(!temp->child[index]){
+                temp->child[index]=new trie();
+            }
+            temp=temp->child[index];
+        }
+        temp->endword=true;
+    }
+    
+    bool search(string word) {
+        trie *temp=root;
+        for(int i=0;i<word.size();i++){
+            int index=word[i]-'a';
+            if(!temp->child[index]){
+                return false;
+            }
+            temp=temp->child[index];
+        }
+        return temp->endword;
+    }
+    
+    bool startsWith(string word) {
+          trie *temp=root;
+        for(int i=0;i<word.size();i++){
+            int index=word[i]-'a';
+            if(!temp->child[index]){
+                return false;
+            }
+            temp=temp->child[index];
+        }
+        return true;
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
