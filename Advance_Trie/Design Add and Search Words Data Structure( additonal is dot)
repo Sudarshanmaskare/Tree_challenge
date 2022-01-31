@@ -1,0 +1,53 @@
+class WordDictionary {
+    WordDictionary *child[26];
+    bool isend;
+public:
+    WordDictionary() {
+        for(int i=0;i<26;i++){
+            child[i]=NULL;
+        }
+        isend=false;
+    }
+    
+    void addWord(string word) {
+        WordDictionary *cur=this;
+        for(int i=0;i<word.size();i++){
+            int index=word[i]-'a';
+            if(!cur->child[index]){
+                cur->child[index]=new WordDictionary();
+            }
+            cur=cur->child[index];
+        }
+        cur->isend=true;
+    }
+    
+    bool search(string word,WordDictionary* root=NULL) {
+        if(!root) root=this;
+        WordDictionary* cur=root;
+        for(int i=0;i<word.size();i++){
+            if(word[i]=='.'){
+                for(int j=0;j<26;j++){
+                    if(cur->child[j] && search(word.substr(i+1,word.size()-i),cur->child[j])){
+                        return true;
+                    }
+                }
+                return false;
+            }
+            else{
+                int index=word[i]-'a';
+                if(!cur->child[index]){
+                    return false;
+                }
+                cur=cur->child[index];
+            }
+        }
+        return cur->isend;
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
