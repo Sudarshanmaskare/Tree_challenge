@@ -1,0 +1,46 @@
+struct trie{
+    trie* node[2];
+    trie(){
+        node[0]=node[1]=NULL;
+    }
+};
+class Solution {
+    trie* root;
+public:
+    Solution(){
+        root=new trie();
+    }
+    void insert(trie *root,int num){
+        trie* cur=root;
+        for(int i=31;i>=0;i--){
+            int bit=(num>>i)&1;
+            if(!cur->node[bit]){
+                cur->node[bit]=new trie();
+            }
+            cur=cur->node[bit];
+        }
+    }
+    int cal(trie *root,int num){
+        trie* cur=root;
+        int ans=0;
+        for(int i=31;i>=0;i--){
+            int bit=(num>>i)&1;
+            if(cur->node[!bit]){
+                ans+=(1<<i);
+                cur=cur->node[!bit];
+            }
+            else{
+                cur=cur->node[bit];
+            }
+        }
+        return ans;
+    }
+    int findMaximumXOR(vector<int>& nums) {
+        int max_ans=0;
+        for(int i=0;i<nums.size();i++){
+            insert(root,nums[i]);
+            max_ans=max(max_ans,cal(root,nums[i]));
+        }
+        return max_ans;
+    }
+};
