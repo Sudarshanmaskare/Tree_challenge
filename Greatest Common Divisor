@@ -1,0 +1,90 @@
+GCD (Greatest Common Divisor) of two positive integers is the largest positive integer that divides both numbers without a remainder.
+Siblings: Nodes with the same parent are called siblings.
+Level of a tree: Level of a tree is the number of edges on the longest path from the root node to a leaf.
+You are given nodes of a binary tree of leven n as input.
+Caluclate the GCD of each pair of siblings and then find the max & min GCD among them. Print the difference of max & min GCD ( max GCD - min GCD)
+
+Note:
+Print -1 if input tree is empty i.e level of tree is -1.
+Consider those nodes which have a sibling
+Print 0 if no such pair of siblings found
+Input Format:
+The input is in the following format:
+
+The first line takes an integer n as input which represents the level of tree (the root node is at 0 level). (if level is equal to -1, means empty tree)
+Next n+1 lines contain the nodes in the tree level order. Each i'th line represents the nodes present in the binary tree in i'th level.
+1st line contains level 0 nodes. (i.e. root node).
+2nd line contains nodes for level 1.
+3rd line contains nodes for level 2 and so on.
+Each node is represented by an integer value. Node value of -1 denotes an empty node(no node present at that place).
+
+Output Format:
+A single integer i.e., the difference of max & min GCD (max GCD - min GCD)
+
+Constraints:
+-1 <= level of tree <= 20
+0 < element at nodes of tree <= 500
+
+
+
+
+class Google {
+public static void main(String[] args) {
+
+Scanner sc = new Scanner(System.in);
+
+    int n = sc.nextInt();
+
+    if(n==-1){
+        System.out.print(-1);
+        return ;
+    }
+
+    int minGCD = Integer.MAX_VALUE, maxGCD = Integer.MIN_VALUE;
+    int countPrev = 0;
+    for (int i = 0; i <= n; i++) {
+        if (i == 0) {
+            int root = sc.nextInt();
+            if(root !=-1)
+            countPrev = 1;
+        } else {
+            int count  = 0;
+            for (int j = 0; j < (2*countPrev); j+=2) {
+                int a = sc.nextInt();
+                if(a!=-1) {
+                count++;
+                }
+                int b = sc.nextInt();
+                if(b!=-1) {
+                count++;
+                }
+                if (a == -1 || b == -1) {
+                    continue;
+                }
+                int newGCD = gcd(a, b);
+                if (newGCD < minGCD) {
+                    minGCD = newGCD;
+                }
+                if (newGCD > maxGCD) {
+                    maxGCD = newGCD;
+                }
+            }
+    
+            countPrev = count;
+        }
+    }
+    
+    if (minGCD == Integer.MAX_VALUE && maxGCD == Integer.MIN_VALUE) {
+        System.out.print(0);
+        return;
+    }
+    System.out.print(maxGCD - minGCD);
+}
+
+public static int gcd (int a, int b) {
+    if(b == 0){
+        return a;
+    }
+    return gcd(b, a % b);
+}
+}
